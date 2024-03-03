@@ -13,8 +13,8 @@ namespace Lab_1
         {
             Color sourceColor = sourceImage.GetPixel(x, y);
             Color resultColor = Color.FromArgb(255 - sourceColor.R,
-                                                255 - sourceColor.G,
-                                                255 - sourceColor.B);
+                                               255 - sourceColor.G,
+                                               255 - sourceColor.B);
             return resultColor;
         }
     }

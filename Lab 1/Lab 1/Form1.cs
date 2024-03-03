@@ -156,6 +156,9 @@ namespace Lab_1
             image = resultImage;
             pictureBox1.Image = image;
             pictureBox1.Refresh();
+
+            progressBar1.Value = 0;
+            progressBar1.Refresh();
         }
 
         private void ìåäèàííûéÔèëüòğToolStripMenuItem_Click(object sender, EventArgs e)
@@ -236,10 +239,40 @@ namespace Lab_1
                 listImages.RemoveAt(listImages.Count - 1);
             }
         }
-        //TODO: 
-        private void Form1_Load(object sender, EventArgs e)
-        {
 
+        private void ñåğûéÌèğToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Filters filter = new GrayWorldFilter();
+            backgroundWorker1.RunWorkerAsync(filter);
+        }
+
+        private void îòêğûòüToolStripMenuItem_Click_1(object sender, EventArgs e)
+        {
+            OpenFileDialog dialog = new OpenFileDialog();
+            dialog.Filter = "Image files|*.png; *.jpg; *.bmp|All files(*.*)|*.*";
+
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                originImage = new Bitmap(dialog.FileName);
+                image = new Bitmap(dialog.FileName);
+                pictureBox1.Image = image;
+
+                pictureBox1.Refresh();
+                listImages.Add(image);
+                setAllToolStrimMenuBtn_Enable();
+            }
+        }
+
+        private void èäåàëüíûéÎòğàæàòåëüToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Filters filter = new PerfectReflectorFilter();
+            backgroundWorker1.RunWorkerAsync(filter);
+        }
+
+        private void êîğğåêöèÿÑÎïîğíûìÖâåòîìToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Filters filter = new BaseColorCorrectionFilter();
+            backgroundWorker1.RunWorkerAsync(filter);
         }
     }
 }
