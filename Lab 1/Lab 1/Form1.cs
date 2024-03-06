@@ -292,5 +292,11 @@ namespace Lab_1
             Filters filter = new MoveFilter();
             backgroundWorker1.RunWorkerAsync(filter);
         }
+
+        private void ïîâîğîòÈçîáğàæåíèÿToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Filters filter = new RotateFilter();
+            backgroundWorker1.RunWorkerAsync(filter);
+        }
     }
 }

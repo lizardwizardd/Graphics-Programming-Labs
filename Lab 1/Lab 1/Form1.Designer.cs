@@ -57,6 +57,7 @@
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.button1 = new System.Windows.Forms.Button();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.поворотИзображенияToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -146,7 +147,8 @@
             this.серыйМирToolStripMenuItem,
             this.идеальныйОтражательToolStripMenuItem,
             this.коррекцияСОпорнымЦветомToolStripMenuItem,
-            this.перемещениеИзображенияToolStripMenuItem});
+            this.перемещениеИзображенияToolStripMenuItem,
+            this.поворотИзображенияToolStripMenuItem});
             this.точечныеToolStripMenuItem.Name = "точечныеToolStripMenuItem";
             this.точечныеToolStripMenuItem.Size = new System.Drawing.Size(243, 30);
             this.точечныеToolStripMenuItem.Text = "Точечные";
@@ -304,6 +306,13 @@
             this.backgroundWorker1.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.backgroundWorker1_ProgressChanged);
             this.backgroundWorker1.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker1_RunWorkerCompleted);
             // 
+            // поворотИзображенияToolStripMenuItem
+            // 
+            this.поворотИзображенияToolStripMenuItem.Name = "поворотИзображенияToolStripMenuItem";
+            this.поворотИзображенияToolStripMenuItem.Size = new System.Drawing.Size(319, 30);
+            this.поворотИзображенияToolStripMenuItem.Text = "Поворот изображения";
+            this.поворотИзображенияToolStripMenuItem.Click += new System.EventHandler(this.поворотИзображенияToolStripMenuItem_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 21F);
@@ -355,5 +364,6 @@
         private ToolStripMenuItem перемещениеИзображенияToolStripMenuItem;
         private ToolStripMenuItem резкостьToolStripMenuItem;
         private ToolStripMenuItem размытиеВДвиженииToolStripMenuItem;
+        private ToolStripMenuItem поворотИзображенияToolStripMenuItem;
     }
 }

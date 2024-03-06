@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+// Равный вес у всех пикселей в матрицу
+
 namespace Lab_1
 {
     class BlurFilter : MatrixFilter
