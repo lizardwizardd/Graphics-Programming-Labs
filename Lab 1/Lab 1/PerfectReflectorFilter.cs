@@ -1,9 +1,12 @@
-﻿using System;
+﻿ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
+// Баланс белого проводится на основе максимальных значений по каждому цветовому каналу.
+// Цвета умножаются на такое значение, чтобы максимальное значение стало 255
 
 namespace Lab_1
 {
@@ -17,9 +20,9 @@ namespace Lab_1
         {
             Color sourceColor = sourceImage.GetPixel(x, y);
             Color resultColor = Color.FromArgb(
-                (int)(sourceColor.R * modifierR),
-                (int)(sourceColor.G * modifierG),
-                (int)(sourceColor.B * modifierB));
+                Clamp((int)(sourceColor.R * modifierR), 0, 255),
+                Clamp((int)(sourceColor.G * modifierG), 0, 255),
+                Clamp((int)(sourceColor.B * modifierB), 0, 255));
             return resultColor;
         }
 

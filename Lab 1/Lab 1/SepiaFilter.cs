@@ -4,6 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+// На значение k уменьшается синий,
+// На 2k увеличивается красный и на 0.5k увеличивается зеленый
+
 namespace Lab_1
 {
     class SepiaFilter : Filters

@@ -274,5 +274,23 @@ namespace Lab_1
             Filters filter = new BaseColorCorrectionFilter();
             backgroundWorker1.RunWorkerAsync(filter);
         }
+
+        private void ğåçêîñòüToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Filters filter = new SharpnessFilter();
+            backgroundWorker1.RunWorkerAsync(filter);
+        }
+
+        private void ğàçìûòèåÂÄâèæåíèèToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Filters filter = new MotionBlurFilter();
+            backgroundWorker1.RunWorkerAsync(filter);
+        }
+
+        private void ïåğåìåùåíèåÈçîáğàæåíèÿToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Filters filter = new MoveFilter();
+            backgroundWorker1.RunWorkerAsync(filter);
+        }
     }
 }

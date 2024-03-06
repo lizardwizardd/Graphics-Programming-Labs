@@ -5,6 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+// Находит минимальную и максимальную интенсивность на изображении
+// и корректирует цвета так, чтобы минимальная стала 0, и максимальная 255
+
 namespace Lab_1
 {
     class HistogramEqualizationFilter : Filters
@@ -20,9 +23,9 @@ namespace Lab_1
                 {
                     Color pixelColor = sourceImage.GetPixel(i, j);
                     int brightness = (int)
-                        (0.299 * pixelColor.R +
-                         0.587 * pixelColor.G +
-                         0.114 * pixelColor.B);
+                        (pixelColor.R +
+                         pixelColor.G +
+                         pixelColor.B);
 
                     minBrightness = Math.Min(minBrightness, brightness);
                     maxBrightness = Math.Max(maxBrightness, brightness);
@@ -34,9 +37,9 @@ namespace Lab_1
         {
             Color sourceColor = sourceImage.GetPixel(x, y);
             int brightness = (int)
-                (0.299 * sourceColor.R +
-                 0.587 * sourceColor.G +
-                 0.114 * sourceColor.B);
+                (sourceColor.R +
+                 sourceColor.G +
+                 sourceColor.B);
 
             brightness = (brightness - minBrightness) * 
                          (255-0) / (maxBrightness - minBrightness);

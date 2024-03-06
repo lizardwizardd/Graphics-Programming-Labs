@@ -47,12 +47,14 @@ namespace Lab_1
 
             // Использование консоли не подразумевается с Windows Forms,
             // поэтому цвета задаются в коде
-            int baseR = 189;
-            int newR = 199;
-            int baseG = 135;
-            int newG = 140;
-            int baseB = 220;
-            int newB = 210;
+            int baseR = 41;
+            int baseG = 125;
+            int baseB = 190;
+
+            int newR = 76;
+            int newG = 165;
+            int newB = 135;
+
             modifierR = (float)newR / baseR;
             modifierG = (float)newG / baseG;
             modifierB = (float)newB / baseB;

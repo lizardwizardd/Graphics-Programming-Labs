@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+// Сделать так, чтобы средняя интенсивность по каждому каналу совпадала
+
 namespace Lab_1
 {
     internal class GrayWorldFilter : Filters
