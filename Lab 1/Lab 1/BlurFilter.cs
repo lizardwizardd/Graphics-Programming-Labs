@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-// Равный вес у всех пикселей в матрицу
+// Равный вес у всех пикселей в матрицe
 
 namespace Lab_1
 {

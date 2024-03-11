@@ -337,13 +337,55 @@ namespace Lab_1
 
         private void ğàñøèğåíèåToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Filters filter = new DilationFilter();
+            Filters filter = new Dilation();
             backgroundWorker1.RunWorkerAsync(filter);
         }
 
         private void ığîçèÿToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Filters filter = new ErosianFilter();
+            Filters filter = new Erosion();
+            backgroundWorker1.RunWorkerAsync(filter);
+        }
+
+        private void îòêğûòèåToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Filters filter = new Opening();
+            backgroundWorker1.RunWorkerAsync(filter);
+        }
+
+        private void çàêğûòèåToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Filters filter = new Closing();
+            backgroundWorker1.RunWorkerAsync(filter);
+        }
+
+        private void ığîçèÿToolStripMenuItem_Click_1(object sender, EventArgs e)
+        {
+            Filters filter = new Erosion();
+            backgroundWorker1.RunWorkerAsync(filter);
+        }
+
+        private void ğàñøèğåíèåToolStripMenuItem_Click_1(object sender, EventArgs e)
+        {
+            Filters filter = new Dilation();
+            backgroundWorker1.RunWorkerAsync(filter);
+        }
+
+        private void topHatToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Filters filter = new TopHat();
+            backgroundWorker1.RunWorkerAsync(filter);
+        }
+
+        private void blackHatToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Filters filter = new BlackHat();
+            backgroundWorker1.RunWorkerAsync(filter);
+        }
+
+        private void gradToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Filters filter = new Grad();
             backgroundWorker1.RunWorkerAsync(filter);
         }
     }

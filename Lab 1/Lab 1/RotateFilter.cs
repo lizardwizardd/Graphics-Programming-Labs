@@ -6,17 +6,15 @@ namespace Lab_1
 {
     internal class RotateFilter : Filters
     {
-        protected float angleDegrees = 45.0f; // Change this value as needed
+        protected float angleDegrees = 45.0f;
 
         public override Bitmap processImage(Bitmap sourceImage, BackgroundWorker worker)
         {
             Bitmap resultImage = new Bitmap(sourceImage.Width, sourceImage.Height);
 
-            // Calculate rotation center
             int centerX = sourceImage.Width / 2;
             int centerY = sourceImage.Height / 2;
 
-            // Convert angle to radians
             float angleRadians = (float)(angleDegrees * Math.PI / 180.0);
 
             // Применение фильтра
@@ -24,22 +22,20 @@ namespace Lab_1
             {
                 for (int j = 0; j < sourceImage.Height; j++)
                 {
-                    // Calculate rotated coordinates
+                    // Найти преобразованные координаты
                     float rotatedX = (float)(Math.Cos(angleRadians) * (i - centerX) - Math.Sin(angleRadians) * (j - centerY) + centerX);
                     float rotatedY = (float)(Math.Sin(angleRadians) * (i - centerX) + Math.Cos(angleRadians) * (j - centerY) + centerY);
 
-                    // Round to the nearest integer to get the nearest neighbor
+                    // Округление координат
                     int nearestX = (int)Math.Round(rotatedX);
                     int nearestY = (int)Math.Round(rotatedY);
 
-                    // Check if the new position is within the image bounds
                     if (nearestX >= 0 && nearestX < sourceImage.Width && nearestY >= 0 && nearestY < sourceImage.Height)
                     {
                         resultImage.SetPixel(i, j, sourceImage.GetPixel(nearestX, nearestY));
                     }
                     else
                     {
-                        // Set pixels outside the bounds to black
                         resultImage.SetPixel(i, j, Color.Black);
                     }
                 }

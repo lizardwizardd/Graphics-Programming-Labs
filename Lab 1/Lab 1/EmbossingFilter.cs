@@ -10,7 +10,6 @@ namespace Lab_1
 {
      class EmbossingFilter : Filters
     {
-
         protected override Color calculateNewPixelColor(Bitmap sourceImage, int x, int y)
         {
             float[,] kernel = { { 0.0f, 1.0f,0.0f },
