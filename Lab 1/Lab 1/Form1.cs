@@ -298,5 +298,53 @@ namespace Lab_1
             Filters filter = new RotateFilter();
             backgroundWorker1.RunWorkerAsync(filter);
         }
+
+        private void âîëíûToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Filters filter = new WaveFilter1();
+            backgroundWorker1.RunWorkerAsync(filter);
+        }
+
+        private void âîëíû2ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Filters filter = new WaveFilter2();
+            backgroundWorker1.RunWorkerAsync(filter);
+        }
+
+        private void ñòåêëîToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Filters filter = new GlassFilter();
+            backgroundWorker1.RunWorkerAsync(filter);
+        }
+
+        private void îïåğàòîğÙàğğàToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Filters filter = new SharraFilter();
+            backgroundWorker1.RunWorkerAsync(filter);
+        }
+
+        private void îïåğàòîğÏğèToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Filters filter = new PriutFilters();
+            backgroundWorker1.RunWorkerAsync(filter);
+        }
+
+        private void ñâåòÿùèåñÿÊğàÿToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Filters filter = new GlowingEdgesFilter();
+            backgroundWorker1.RunWorkerAsync(filter);
+        }
+
+        private void ğàñøèğåíèåToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Filters filter = new DilationFilter();
+            backgroundWorker1.RunWorkerAsync(filter);
+        }
+
+        private void ığîçèÿToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Filters filter = new ErosianFilter();
+            backgroundWorker1.RunWorkerAsync(filter);
+        }
     }
 }
