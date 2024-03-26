@@ -18,6 +18,8 @@ namespace WindowsFormsApp8
         Bin bin;
         View view;
         bool loaded;
+        int frameCount;
+        DateTime nextFpsUpdate = DateTime.Now.AddSeconds(1);
         int currentLayer = 0;
         public Form1()
         {
@@ -29,16 +31,37 @@ namespace WindowsFormsApp8
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            Application.Idle += Application_Idle;
             //Application.Idle += Application_Idle;
+        }
+
+        private void Application_Idle(object sender, EventArgs e)
+        {
+            while (glControl2.IsIdle)
+            {
+                displayFPS();
+                glControl2.Invalidate();
+            }
         }
 
         private void glControl2_Paint(object sender, PaintEventArgs e)
         {
             if (loaded)
-            {
+            {   
                 view.DrawQuads(currentLayer);
                 glControl2.SwapBuffers();
             }
+        }
+
+        void displayFPS()
+        {
+            if (DateTime.Now >= nextFpsUpdate)
+            {
+                this.Text = String.Format("CT Visualizer (fps={0})", frameCount);
+                nextFpsUpdate = DateTime.Now.AddSeconds(1);
+                frameCount += 1;
+            }
+            frameCount++;
         }
 
         private void открытьToolStripMenuItem_Click(object sender, EventArgs e)
