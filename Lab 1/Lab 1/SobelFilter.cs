@@ -16,8 +16,6 @@ namespace Lab_1
                                 { -1.0f,0f, 1.0f } };
         protected override Color calculateNewPixelColor(Bitmap sourceImage, int x, int y)
         {
-            //int radiusX = kernelx.GetLength(0) / 2;
-            //int radiusY = kernel.GetLength(1) / 2;
             float resultR = 0;
             float resultG = 0;
             float resultB = 0;

@@ -7,33 +7,6 @@ using System.Threading.Tasks;
 
 namespace Lab_1
 {
-    class Dilation : MorfologyFilters
-    {
-        public Dilation()
-        {
-            this.mode = 0;
-        }
-
-        public Dilation(int[,] mask)
-        {
-            this.mask = mask;
-            this.mode = 0;
-        }
-    }
-
-    class Erosion : MorfologyFilters
-    {
-        public Erosion()
-        {
-            mode = 1;
-        }
-        public Erosion(int[,] mask)
-        {
-            this.mask = mask;
-            mode = 1;
-        }
-    }
-
     class Opening : MorfologyFilters
     {
         protected override Color calculateNewPixelColor(Bitmap sourceImage, int x, int y)
@@ -150,6 +123,33 @@ namespace Lab_1
                 }
             }
             return result;
+        }
+    }
+
+    class Dilation : MorfologyFilters
+    {
+        public Dilation()
+        {
+            this.mode = 0;
+        }
+
+        public Dilation(int[,] mask)
+        {
+            this.mask = mask;
+            this.mode = 0;
+        }
+    }
+
+    class Erosion : MorfologyFilters
+    {
+        public Erosion()
+        {
+            mode = 1;
+        }
+        public Erosion(int[,] mask)
+        {
+            this.mask = mask;
+            mode = 1;
         }
     }
 }
