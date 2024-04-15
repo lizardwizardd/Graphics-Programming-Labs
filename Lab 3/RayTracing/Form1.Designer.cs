@@ -36,11 +36,11 @@
             this.glControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.glControl1.AutoSize = true;
+            this.glControl1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.glControl1.BackColor = System.Drawing.Color.Black;
             this.glControl1.Location = new System.Drawing.Point(12, 12);
             this.glControl1.Name = "glControl1";
-            this.glControl1.Size = new System.Drawing.Size(600, 400);
+            this.glControl1.Size = new System.Drawing.Size(500, 500);
             this.glControl1.TabIndex = 0;
             this.glControl1.VSync = false;
             this.glControl1.Load += new System.EventHandler(this.glControl1_Load);
@@ -50,14 +50,11 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(624, 424);
+            this.ClientSize = new System.Drawing.Size(524, 524);
             this.Controls.Add(this.glControl1);
-            this.MaximumSize = new System.Drawing.Size(640, 463);
-            this.MinimumSize = new System.Drawing.Size(640, 463);
             this.Name = "Form1";
             this.Text = "Form1";
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
