@@ -31,6 +31,7 @@ namespace RayTracing
         Vector3 campos;
         float aspect = 4/3;
         private Vector3[] vertdata;
+        int uniform_reflectionCoef;
 
         void loadShader(String filename, ShaderType type, int program, out int address)
         {
@@ -51,7 +52,6 @@ namespace RayTracing
             loadShader("..\\..\\raytracing.frag", ShaderType.FragmentShader, BasicProgramID, out BasicFragmentShader);
             GL.LinkProgram(BasicProgramID);
             int status = 0;
-            GL.GetProgram(BasicProgramID, GetProgramParameterName.LinkStatus, out status);
             Console.WriteLine(GL.GetProgramInfoLog(BasicProgramID));
 
             vertdata = new Vector3[] {
@@ -85,6 +85,16 @@ namespace RayTracing
             return true;
         }
 
+        void SetUniformVec3(string name, OpenTK.Vector3 value)
+        {
+            GL.Uniform3(GL.GetUniformLocation(BasicProgramID, name), value);
+        }
+
+        void SetUniformFloat(string name, float value)
+        {
+            GL.Uniform1(GL.GetUniformLocation(BasicProgramID, name), value);
+        }
+
         public Form1()
         {
             InitializeComponent();
@@ -95,6 +105,11 @@ namespace RayTracing
             GL.ClearColor(Color.AliceBlue);
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
             GL.UseProgram(BasicProgramID);
+
+
+            float reflectionCoefValue = (float)trackBar1.Value / 100.0f;
+            uniform_reflectionCoef = GL.GetUniformLocation(BasicProgramID, "u_reflectionCoef");
+            GL.Uniform1(uniform_reflectionCoef, 0.6);
 
             GL.Color3(Color.White);
             GL.Begin(PrimitiveType.Quads);
@@ -120,6 +135,21 @@ namespace RayTracing
         {
             Init();
             InitShaders();
+        }
+
+        private void trackBar1_ValueChanged(object sender, EventArgs e)
+        {
+            glControl1.Invalidate();
+        }
+
+        private void trackBar2_Scroll(object sender, EventArgs e)
+        {
+            glControl1.Invalidate();
+        }
+
+        private void trackBar1_Scroll(object sender, EventArgs e)
+        {
+            glControl1.Invalidate();
         }
     }
 };

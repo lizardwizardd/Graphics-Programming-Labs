@@ -3,13 +3,15 @@
 out vec4 FragColor;
 in vec3 glPosition;
 
+uniform vec3 campos;
+
 #define EPSILON 0.001
 #define BIG 1000000.0
 const int DIFFUSE = 1;
 const int REFLECTION = 2;
 const int REFRACTION = 3;
 const int MAX_STACK_SIZE = 10;
-const int MAX_TRACE_DEPTH = 8;
+const int MAX_TRACE_DEPTH = 5;
 
 const int DIFFUSE_REFLECTION = 1;
 const int MIRROR_REFLECTION = 2;
@@ -117,6 +119,7 @@ SLight uLight;
 STracingRay stack[MAX_STACK_SIZE];
 int stackSize = 0;
 STetrahedron tetrahedron;
+uniform float u_reflectionCoef;
 
 // --------------------
 // FUNCTION DEFINITIONS
@@ -207,7 +210,6 @@ void initializeDefaultScene (out STriangle triangles[TRIANGLES_SIZE], out SSpher
 	triangles[3].v3 = vec3(-5.0, 5.0, 5.0); 
 	triangles[3].MaterialIdx = 1;
 	
-
 	// LEFT UPPER
     triangles[0].v1 = vec3(-5.0,-5.0,-8.0); 
 	triangles[0].v2 = vec3(-5.0, 5.0, 5.0); 
@@ -270,7 +272,7 @@ void initializeDefaultScene (out STriangle triangles[TRIANGLES_SIZE], out SSpher
     tetrahedron.v2 = vec3(0.0f, -2.0f, 0.0f);
     tetrahedron.v3 = vec3(1.0f, -2.0f, 2.0f);
     tetrahedron.v1 = vec3(0.0f, -0.5f, 1.0f);
-    tetrahedron.MaterialIdx = 2;
+    tetrahedron.MaterialIdx = 6;
 }
 
 void initializeDefaultLightMaterials(out SLight light, out SMaterial materials[8]) 
@@ -316,8 +318,8 @@ void initializeDefaultLightMaterials(out SLight light, out SMaterial materials[8
 	
 	materials[6].Color = vec3(1.0, 1.0, 1.0);  
 	materials[6].LightCoeffs = vec4(lightCoefs); 
-    materials[6].ReflectionCoef = 0.5;  
-	materials[6].RefractionCoef = 1.0;  
+    materials[6].ReflectionCoef = 0.6;  
+	materials[6].RefractionCoef = 0.6;
 	materials[6].MaterialType = MIRROR_REFLECTION;
 
 	materials[7].Color = vec3(1.0, 0.2, 1.0);
@@ -501,7 +503,7 @@ bool Raytrace ( SRay ray, float start, float final, inout SIntersection intersec
     }
 
 	return result;
-} 
+}
 
 float Shadow(SLight currLight, SIntersection intersect) 
 {     
@@ -516,6 +518,26 @@ float Shadow(SLight currLight, SIntersection intersect)
     	shadowing = 0.0;     
 	}
 	return shadowing; 
+}
+
+float fresnel(vec3 incident, vec3 normal, float eta1, float eta2) {
+    float cosi = clamp(dot(incident, normal), -1.0, 1.0);
+    float etai = eta1, etat = eta2;
+    if (cosi > 0.0)
+	{
+		float tmp = etat;
+		etat = etai;
+		etai = tmp;
+	}
+    float sint = etai / etat * sqrt(max(0.0, 1.0 - cosi*cosi));
+    if (sint >= 1.0) { return 1.0; } // Total internal reflection
+    else {
+        float cost = sqrt(max(0.0, 1.0 - sint*sint));
+        cosi = abs(cosi);
+        float Rs = ((etat * cosi) - (etai * cost)) / ((etat * cosi) + (etai * cost));
+        float Rp = ((etai * cosi) - (etat * cost)) / ((etai * cosi) + (etat * cost));
+        return (Rs * Rs + Rp * Rp) / 2.0;
+    }
 }
 
 void main ( void )
@@ -562,7 +584,40 @@ void main ( void )
 				    STracingRay reflectRay = STracingRay( SRay(intersect.Point + reflectDirection * 0.001, reflectDirection), contribution, trRay.depth + 1);    
 				    pushRay(reflectRay);  
 				    break;  
-			    }     
+			    }
+				case REFRACTION:
+				{
+					float eta = 1.0;
+					SMaterial material = materials[intersect.MaterialType]; 
+					float etaObject = material.RefractionCoef; // IOR of the object
+
+					vec3 normal = intersect.Normal;
+					if (dot(ray.Direction, normal) > 0.0)
+					{
+						normal = -normal;
+						eta = etaObject;
+						etaObject = 1.0;
+					}
+
+					vec3 refractedDir = refract(ray.Direction, normal, eta / etaObject);
+					float kr = fresnel(ray.Direction, normal, eta, etaObject);
+
+					if (kr < 1.0) { // Transmission occurs
+						float contribution = trRay.contribution * (1.0 - kr);
+						STracingRay refractedRay = STracingRay(SRay(intersect.Point +
+												   refractedDir * 0.001, refractedDir), contribution, trRay.depth + 1);
+						pushRay(refractedRay);
+					}
+
+					// Optionally handle reflection as well (partial reflection based on Fresnel)
+					if (kr > 0.0) {
+						vec3 reflectedDir = reflect(ray.Direction, normal);
+						float contribution = trRay.contribution * kr;
+						STracingRay reflectedRay = STracingRay(SRay(intersect.Point + reflectedDir * 0.001, reflectedDir), contribution, trRay.depth + 1);
+						pushRay(reflectedRay);
+					}
+					break;
+				}
 			}  
 		}
 	}
