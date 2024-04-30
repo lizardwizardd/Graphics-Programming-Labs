@@ -260,7 +260,7 @@ void initializeDefaultScene (out STriangle triangles[TRIANGLES_SIZE], out SSpher
 	
 	spheres[0].Center = vec3(2.0,0.0,2.0);  
 	spheres[0].Radius = 1.0;  
-	spheres[0].MaterialIdx = 6; 
+	spheres[0].MaterialIdx = 7; 
  
     spheres[1].Center = vec3(-2.0,-1.0,1.0);  
 	spheres[1].Radius = 1.5;  
@@ -325,8 +325,8 @@ void initializeDefaultLightMaterials(out SLight light, out SMaterial materials[8
 	materials[7].Color = vec3(1.0, 0.2, 1.0);
 	materials[7].LightCoeffs = vec4(lightCoefs); 
     materials[7].ReflectionCoef = 0.5;  
-	materials[7].RefractionCoef = 1.0;  
-	materials[7].MaterialType = DIFFUSE_REFLECTION;
+	materials[7].RefractionCoef = 1.3;  
+	materials[7].MaterialType = REFRACTION;
 }
 
 SRay GenerateRay ( SCamera uCamera )
@@ -588,33 +588,52 @@ void main ( void )
 				case REFRACTION:
 				{
 					float eta = 1.0;
-					SMaterial material = materials[intersect.MaterialType]; 
-					float etaObject = material.RefractionCoef; // IOR of the object
-
-					vec3 normal = intersect.Normal;
-					if (dot(ray.Direction, normal) > 0.0)
+					float eta_object = 1.5;
+					vec3 N = intersect.Normal;
+					float cosi = clamp(dot(ray.Direction, N), -1.0, 1.0);
+					float cost2;
+    
+					if (cosi < 0.0) 
+					{ 
+						cosi = -cosi; 
+					} 
+					else 
 					{
-						normal = -normal;
-						eta = etaObject;
-						etaObject = 1.0;
+						float tmp = eta;
+						eta = eta_object;
+						eta_object = tmp;
+						N = -N; 
 					}
-
-					vec3 refractedDir = refract(ray.Direction, normal, eta / etaObject);
-					float kr = fresnel(ray.Direction, normal, eta, etaObject);
-
-					if (kr < 1.0) { // Transmission occurs
-						float contribution = trRay.contribution * (1.0 - kr);
-						STracingRay refractedRay = STracingRay(SRay(intersect.Point +
-												   refractedDir * 0.001, refractedDir), contribution, trRay.depth + 1);
-						pushRay(refractedRay);
-					}
-
-					// Optionally handle reflection as well (partial reflection based on Fresnel)
-					if (kr > 0.0) {
-						vec3 reflectedDir = reflect(ray.Direction, normal);
-						float contribution = trRay.contribution * kr;
-						STracingRay reflectedRay = STracingRay(SRay(intersect.Point + reflectedDir * 0.001, reflectedDir), contribution, trRay.depth + 1);
-						pushRay(reflectedRay);
+    
+					float eta_ratio = eta / eta_object;
+					float k = 1.0 - eta_ratio * eta_ratio * (1.0 - cosi * cosi);
+    
+					// Total internal reflection
+					if (k < 0.0) 
+					{
+						vec3 reflectDir = reflect(ray.Direction, N);
+						float contribution = trRay.contribution * intersect.ReflectionCoef;
+						STracingRay reflectRay = STracingRay(SRay(intersect.Point + reflectDir * 0.001, reflectDir),
+															 contribution, trRay.depth + 1);
+						pushRay(reflectRay);
+					} 
+					else 
+					{
+						cost2 = sqrt(k);
+						vec3 refractDir = eta_ratio * ray.Direction + (eta_ratio * cosi - cost2) * N;
+						float contribution = trRay.contribution * intersect.RefractionCoef;
+						float fresnelCoeff = fresnel(ray.Direction, N, eta, eta_object);
+        
+						// Refraction ray
+						STracingRay refractRay = STracingRay(SRay(intersect.Point + refractDir * 0.001, refractDir),
+																  contribution * (1.0 - fresnelCoeff), trRay.depth + 1);
+						pushRay(refractRay);
+        
+						// Reflection ray (Fresnel)
+						vec3 reflectDir = reflect(ray.Direction, N);
+						STracingRay reflectRay = STracingRay(SRay(intersect.Point + reflectDir * 0.001, reflectDir),
+															 contribution * fresnelCoeff, trRay.depth + 1);
+						pushRay(reflectRay);
 					}
 					break;
 				}
